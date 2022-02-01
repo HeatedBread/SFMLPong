@@ -8,7 +8,7 @@ void Game::InitVariables()
 
 void Game::InitGraphicsSettings()
 {
-	graphicsSettings.LoadFromFile("Config/config.ini");
+	graphicsSettings.LoadFromFile("config/config.ini");
 }
 
 void Game::InitKeys()
@@ -67,11 +67,11 @@ void Game::InitObjects()
 
 void Game::InitFont()
 {
-	if (!font.LoadFromFile("assets/fonts/PixelFont.ttf"))
+	/*if (!font.LoadFromFile("assets/fonts/PixelFont.ttf"))
 	{
 		std::cout << "FONT ERROR: " << "Cannot find PixelFont.ttf" << "\n";
 		return;
-	}
+	}*/
 
 	scoreBoard.setFont(font);
 	scoreBoard.setCharacterSize(13);

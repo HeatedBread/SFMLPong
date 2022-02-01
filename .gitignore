@@ -1,0 +1,8 @@
+SFML_Pong.vcxproj
+SFML_Pong.vcxproj.user
+SFML_Pong.vcxproj.filters
+SFML_Pong.sln
+Debug
+Release
+*.opendb 
+*.opensdf

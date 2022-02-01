@@ -237,7 +237,7 @@
     <ClInclude Include="src\Paddle.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Config\config.ini" />
+    <None Include="config\config.ini" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
