@@ -27,7 +27,7 @@ void GraphicsSettings::SaveFromFile(const std::string path)
 	ofs.close();
 }
 
-void GraphicsSettings::LoadFromFile(const std::string path)
+void GraphicsSettings::loadFromFile(const std::string path)
 {
 	std::ifstream ifs(path);
 

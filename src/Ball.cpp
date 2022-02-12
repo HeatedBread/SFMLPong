@@ -1,5 +1,13 @@
 #include "Ball.h"
 
+void Ball::LoadTextures()
+{
+	if (!ballTexture.loadFromFile("assets/art/pong_ball.png"))
+		std::cout << "BALL_CLASS: " << "Failed to load ballTexture\n";
+
+	ballSprite.setTexture(ballTexture);
+}
+
 void Ball::InitWindowResolution()
 {
 	windowWidth = graphicsSettings.resolution.width;
@@ -8,63 +16,85 @@ void Ball::InitWindowResolution()
 
 void Ball::InitBall()
 {
-	ballShape.setFillColor(sf::Color::White);
-	ballShape = sf::RectangleShape(ballSize);
-	ballShape.setPosition(position);
+	ballSprite.setScale(ballSize);
+	ballSprite.setPosition(position);
+
+	ballSpeed = ballInitialSpeed;
+	ballVelocity = sf::Vector2f(0.0f, 0.0f);
 }
 
 Ball::Ball(float startPosX, float startPosY, GraphicsSettings& graphicsSettings)
 {
+	srand(time(NULL));
+
 	this->graphicsSettings = graphicsSettings;
 
-	// Set the Y position to a random range
 	position.x = startPosX - ballSize.x;
 	position.y = startPosY - ballSize.y;
 
 	InitWindowResolution();
+	LoadTextures();
 	InitBall();
+	StartGame();
 }
 
 Ball::~Ball()
 {
 }
 
-void Ball::UpdateCollision(unsigned windowWidth, unsigned windowHeight)
+void Ball::UpdateCollision()
 {
-	if (ballShape.getPosition().y < 0.f)
+	// Floor and Ceiling collision
+	if (ballSprite.getPosition().y < 0.f)
 		SwapDirectionY();
-
-	if (ballShape.getPosition().y + ballShape.getGlobalBounds().height > windowHeight)
+	if (ballSprite.getPosition().y + ballSprite.getGlobalBounds().height > windowHeight)
 		SwapDirectionY();
 }
 
 void Ball::UpdateMovement(float deltaTime)
 {
-	ballShape.move(ballSpeed * deltaTime);
-}
+	ballSprite.move(ballVelocity * deltaTime);
+}	
 
 void Ball::Update(float& deltaTime)
 {
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+		StartGame();
+
 	UpdateMovement(deltaTime);
-	UpdateCollision(windowWidth, windowHeight);
+	UpdateCollision();
 }
 
 void Ball::Render(sf::RenderWindow* window)
 {
-	window->draw(ballShape);
+	window->draw(ballSprite);
 }
 
 void Ball::SwapDirectionX()
 {
-	ballSpeed.x = -ballSpeed.x * ballSpeedMultiplier;
+	ballVelocity.x = -ballVelocity.x * ballSpeedMultiplier;
 }
 
 void Ball::SwapDirectionY()
 {
-	ballSpeed.y = -ballSpeed.y * ballSpeedMultiplier;
+	ballVelocity.y = -ballVelocity.y * ballSpeedMultiplier;
 }
 
-sf::RectangleShape Ball::GetShape()
+void Ball::StartGame()
 {
-	return ballShape;
+	ballVelocity.y = ((rand() % 2) == 0) ? ballSpeed : -ballSpeed;
+	ballVelocity.x = ((rand() & 2) == 0) ? ballSpeed : -ballSpeed;
+}
+
+void Ball::Reset()
+{
+	ballSprite.setPosition(windowWidth / 2.f - ballSize.x, windowHeight / 2.f - ballSize.y);
+	ballVelocity = sf::Vector2f(0.f, 0.f);
+	ballSpeed = ballInitialSpeed;
+	StartGame();
+}
+
+sf::Sprite Ball::GetSprite()
+{
+	return ballSprite;
 }

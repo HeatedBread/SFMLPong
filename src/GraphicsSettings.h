@@ -22,5 +22,5 @@ public:
 	GraphicsSettings();
 
 	void SaveFromFile(const std::string path);
-	void LoadFromFile(const std::string path);
+	void loadFromFile(const std::string path);
 };

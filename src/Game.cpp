@@ -8,7 +8,7 @@ void Game::InitVariables()
 
 void Game::InitGraphicsSettings()
 {
-	graphicsSettings.LoadFromFile("config/config.ini");
+	graphicsSettings.loadFromFile("config/config.ini");
 }
 
 void Game::InitKeys()
@@ -49,13 +49,15 @@ void Game::InitObjects()
 	this->playerOne = new Paddle(
 		50.f,
 		float(this->window->getSize().y),
-		graphicsSettings
+		graphicsSettings,
+		"assets/art/paddle_sprite_left.png"
 	);
 
 	this->playerTwo = new Paddle(
 		this->window->getSize().x - 95.f,
 		float(this->window->getSize().y),
-		graphicsSettings
+		graphicsSettings,
+		"assets/art/paddle_sprite_left.png"
 	);
 
 	this->ball = new Ball(
@@ -65,19 +67,23 @@ void Game::InitObjects()
 	);
 }
 
-void Game::InitFont()
+void Game::InitScore(int scoreCharSize, sf::Color scoreColour, float yOffset)
 {
-	/*if (!font.LoadFromFile("assets/fonts/PixelFont.ttf"))
-	{
-		std::cout << "FONT ERROR: " << "Cannot find PixelFont.ttf" << "\n";
-		return;
-	}*/
+	font.loadFromFile("assets/fonts/PixelFont.ttf");
 
-	scoreBoard.setFont(font);
-	scoreBoard.setCharacterSize(13);
-	scoreBoard.setFillColor(sf::Color::White);
-	scoreBoard.setPosition(this->window->getSize().x / 2.f, this->window->getSize().y / 2.f);
-	scoreBoard.setString("TEST");
+	int xOffset = this->window->getSize().x / 2.f;
+
+	playerOneScoreText.setFont(font);
+	playerOneScoreText.setString("99");
+	playerOneScoreText.setCharacterSize(scoreCharSize);
+	playerOneScoreText.setFillColor(scoreColour);
+	playerOneScoreText.setPosition(xOffset / 2.f, yOffset);
+
+	playerTwoScoreText.setFont(font);
+	playerTwoScoreText.setString("99");
+	playerTwoScoreText.setCharacterSize(25);
+	playerTwoScoreText.setFillColor(scoreColour);
+	playerTwoScoreText.setPosition(xOffset * 1.5f, yOffset);
 }
 
 Game::Game()
@@ -87,7 +93,7 @@ Game::Game()
 	InitWindow();
 	InitObjects();
 	InitKeys();
-	InitFont();
+	InitScore(25, sf::Color::White, 50.f);
 }
 
 Game::~Game()
@@ -114,11 +120,35 @@ void Game::UpdateObjects(float deltaTime)
 
 void Game::UpdateCollisions()
 {
-	if (ball->GetShape().getGlobalBounds().intersects(playerOne->GetShape().getGlobalBounds()))
+	if (ball->GetSprite().getGlobalBounds().intersects(playerOne->GetSprite().getGlobalBounds()))
 		ball->SwapDirectionX();
 
-	if (ball->GetShape().getGlobalBounds().intersects(playerTwo->GetShape().getGlobalBounds()))
+	if (ball->GetSprite().getGlobalBounds().intersects(playerTwo->GetSprite().getGlobalBounds()))
 		ball->SwapDirectionX();
+}
+
+void Game::UpdateScore()
+{
+	// Player 2 Scored
+	if (this->ball->GetSprite().getPosition().x < 0.0f)
+	{
+		playerTwoScore++;
+		this->ball->Reset();
+	}
+
+	// Player 1 Scored
+	if (this->ball->GetSprite().getPosition().x > this->window->getSize().x)
+	{
+		playerOneScore++;
+		this->ball->Reset();
+	}
+
+	///
+	/// RETURN TO THIS TO FIGURE OUT HOW TO SCALE ALL OBJECTS IN PROJECT
+	///
+
+	playerOneScoreText.setString(std::to_string(playerOneScore));
+	playerTwoScoreText.setString(std::to_string(playerTwoScore));
 }
 
 void Game::Update()
@@ -126,6 +156,13 @@ void Game::Update()
 	UpdateEvents();
 	UpdateObjects(this->deltaTime);
 	UpdateCollisions();
+	UpdateScore();
+}
+
+void Game::RenderUI()
+{
+	this->window->draw(this->playerOneScoreText);
+	this->window->draw(this->playerTwoScoreText);
 }
 
 void Game::RenderObjects()
@@ -139,9 +176,10 @@ void Game::RenderObjects()
 
 void Game::Render()
 {
-	this->window->clear();
+	this->window->clear(sf::Color(30, 10, 53, 255));
 
 	RenderObjects();
+	RenderUI();
 
 	this->window->display();
 }

@@ -18,12 +18,14 @@ private:
 
 	GraphicsSettings graphicsSettings;
 
+	Ball* ball;
 	Paddle* playerOne;
 	Paddle* playerTwo;
-	Ball* ball;
 
 	sf::Font font;
-	sf::Text scoreBoard;
+	sf::Text playerOneScoreText, playerTwoScoreText;
+
+	int playerOneScore, playerTwoScore;
 
 private:
 	void InitVariables();
@@ -32,7 +34,7 @@ private:
 	void InitWindow();
 	void InitObjects();
 
-	void InitFont();
+	void InitScore(int scoreCharSize, sf::Color scoreColour, float yOffset);
 
 public: 
 	Game();
@@ -40,9 +42,11 @@ public:
 
 	void UpdateObjects(float deltaTime);
 	void UpdateCollisions();
+	void UpdateScore();
 	void Update();
 	void UpdateEvents();
 	
+	void RenderUI();
 	void RenderObjects();
 	void Render();
 	void Run();

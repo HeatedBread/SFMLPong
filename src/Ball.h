@@ -8,14 +8,22 @@ private:
 	sf::Vector2f position;
 	sf::RectangleShape ballShape;
 
-	sf::Vector2f ballSize = sf::Vector2f(25.f, 25.f);
-	sf::Vector2f ballSpeed = sf::Vector2f(150.f, 100.f);
+	sf::Sprite ballSprite;
+	sf::Texture ballTexture;
+
+	sf::Vector2f ballSize = sf::Vector2f(2.5f, 2.5f);
+
+	sf::Vector2f ballVelocity;
+	float ballSpeed;
+	const float ballInitialSpeed = 150.0f;
 	float ballSpeedMultiplier = 1.15f;
 
 	GraphicsSettings graphicsSettings;
 	unsigned windowWidth, windowHeight;
 
 private:
+	void LoadTextures();
+
 	void InitWindowResolution();
 	void InitBall();
 
@@ -23,7 +31,7 @@ public:
 	Ball(float startPosX, float startPosY, GraphicsSettings& graphicsSettings);
 	virtual ~Ball();
 
-	void UpdateCollision(unsigned windowWidth, unsigned windowHeight);
+	void UpdateCollision();
 	void UpdateMovement(float deltaTime);
 	
 	void Update(float& deltaTime);
@@ -32,5 +40,8 @@ public:
 	void SwapDirectionX();
 	void SwapDirectionY();
 
-	sf::RectangleShape GetShape();
+	void StartGame();
+	void Reset();
+
+	sf::Sprite GetSprite();
 };

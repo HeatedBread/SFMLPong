@@ -1,5 +1,13 @@
 #include "Paddle.h"
 
+void Paddle::LoadTextures(std::string paddleSpritePath)
+{
+	if(!paddleTexture.loadFromFile(paddleSpritePath))
+		std::cout << "PADDLE_CLASS: " << "Failed to load paddleTexture\n";
+
+	paddleSprite.setTexture(paddleTexture);
+}
+
 void Paddle::InitWindowResolution()
 {
 	windowWidth = graphicsSettings.resolution.width;
@@ -8,14 +16,13 @@ void Paddle::InitWindowResolution()
 
 void Paddle::InitPaddle()
 {
-	paddleShape.setFillColor(sf::Color::White);
-	paddleShape.setSize(sf::Vector2f(paddleSizeX, paddleSizeY));
-	paddleShape.setPosition(position);
+	paddleSprite.setScale(sf::Vector2f(paddleSizeX, paddleSizeY));
+	paddleSprite.setPosition(position);
 
 	paddleSpeed = 500.f;
 }
 
-Paddle::Paddle(float startPosX, float startPosY, GraphicsSettings& graphicsSettings)
+Paddle::Paddle(float startPosX, float startPosY, GraphicsSettings& graphicsSettings, std::string paddleSpritePath)
 {
 	this->graphicsSettings = graphicsSettings;
 
@@ -25,6 +32,7 @@ Paddle::Paddle(float startPosX, float startPosY, GraphicsSettings& graphicsSetti
 	std::cout << position.y << "\n";
 
 	InitWindowResolution();
+	LoadTextures(paddleSpritePath);
 	InitPaddle();
 }
 
@@ -32,22 +40,22 @@ Paddle::~Paddle()
 {
 }
 
-void Paddle::UpdateInput(float& deltaTime, sf::Keyboard::Key UpKey, sf::Keyboard::Key DownKey)
+void Paddle::UpdateInput(float& deltaTime, sf::Keyboard::Key upKey, sf::Keyboard::Key downKey)
 {
 	if (sf::Keyboard::isKeyPressed(UpKey))
-		paddleShape.move(sf::Vector2f(0.f, -paddleSpeed * deltaTime));
+		paddleSprite.move(sf::Vector2f(0.f, -paddleSpeed * deltaTime));
 
 	if (sf::Keyboard::isKeyPressed(DownKey))
-		paddleShape.move(sf::Vector2f(0.f, paddleSpeed * deltaTime));
+		paddleSprite.move(sf::Vector2f(0.f, paddleSpeed * deltaTime));
 }
 
 void Paddle::UpdateCollision(unsigned windowWidth, unsigned windowHeight)
 {
-	if (paddleShape.getPosition().y < 0.f)
-		paddleShape.setPosition(paddleShape.getPosition().x, 0.f);
+	if (paddleSprite.getPosition().y < 0.f)
+		paddleSprite.setPosition(paddleSprite.getPosition().x, 0.f);
 
-	if(paddleShape.getPosition().y + paddleShape.getGlobalBounds().height > windowHeight)
-		paddleShape.setPosition(paddleShape.getPosition().x, windowHeight - paddleShape.getGlobalBounds().height);
+	if(paddleSprite.getPosition().y + paddleSprite.getGlobalBounds().height > windowHeight)
+		paddleSprite.setPosition(paddleSprite.getPosition().x, windowHeight - paddleSprite.getGlobalBounds().height);
 }
 
 void Paddle::Update(float& deltaTime)
@@ -58,10 +66,10 @@ void Paddle::Update(float& deltaTime)
 
 void Paddle::Render(sf::RenderWindow* window)
 {
-	window->draw(paddleShape);
+	window->draw(paddleSprite);
 }
 
-sf::RectangleShape Paddle::GetShape()
+sf::Sprite Paddle::GetSprite()
 {
-	return paddleShape;
+	return paddleSprite;
 }

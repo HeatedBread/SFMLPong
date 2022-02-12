@@ -83,7 +83,7 @@ public:
     /// \see loadFromMemory, loadFromStream, loadFromSamples, saveToFile
     ///
     ////////////////////////////////////////////////////////////
-    bool LoadFromFile(const std::string& filename);
+    bool loadFromFile(const std::string& filename);
 
     ////////////////////////////////////////////////////////////
     /// \brief Load the sound buffer from a file in memory
