@@ -11,8 +11,10 @@
 class GraphicsSettings
 {
 public:
+
 	std::string title;
 	sf::VideoMode resolution;
+	float screenResizeScale;
 	bool fullScreen;
 	bool verticalSync;
 	unsigned frameRateLimit;

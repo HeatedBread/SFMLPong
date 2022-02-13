@@ -34,7 +34,7 @@ private:
 	void InitWindow();
 	void InitObjects();
 
-	void InitScore(int scoreCharSize, sf::Color scoreColour, float yOffset);
+	void InitScore(int scoreCharSize, sf::Color scoreColour, float xOffset, float yOffset);
 
 public: 
 	Game();

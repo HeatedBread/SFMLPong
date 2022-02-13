@@ -11,15 +11,16 @@ private:
 	sf::Sprite ballSprite;
 	sf::Texture ballTexture;
 
-	sf::Vector2f ballSize = sf::Vector2f(2.5f, 2.5f);
+	sf::Vector2f ballSize = sf::Vector2f(2.3f, 2.3f);
 
 	sf::Vector2f ballVelocity;
 	float ballSpeed;
-	const float ballInitialSpeed = 150.0f;
+	const float ballInitialSpeed = 180.f;
 	float ballSpeedMultiplier = 1.15f;
 
 	GraphicsSettings graphicsSettings;
 	unsigned windowWidth, windowHeight;
+	float resizeScale;
 
 private:
 	void LoadTextures();

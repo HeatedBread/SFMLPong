@@ -42,4 +42,6 @@ void GraphicsSettings::loadFromFile(const std::string path)
 	}
 
 	ifs.close();
+
+	this->screenResizeScale = this->resolution.width / 1280.f;
 }

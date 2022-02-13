@@ -12,11 +12,13 @@ void Ball::InitWindowResolution()
 {
 	windowWidth = graphicsSettings.resolution.width;
 	windowHeight = graphicsSettings.resolution.height;
+
+	resizeScale = graphicsSettings.screenResizeScale;
 }
 
 void Ball::InitBall()
 {
-	ballSprite.setScale(ballSize);
+	ballSprite.setScale(ballSize.x * resizeScale, ballSize.y * resizeScale);
 	ballSprite.setPosition(position);
 
 	ballSpeed = ballInitialSpeed;

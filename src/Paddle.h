@@ -13,7 +13,7 @@ private:
 	sf::Sprite paddleSprite;
 	sf::Texture paddleTexture;
 
-	float paddleSizeX = 5.f, paddleSizeY = 5.f;
+	float paddleSizeX = 3.5f, paddleSizeY = 3.5f;
 	float paddleSpeed;
 
 	GraphicsSettings graphicsSettings;

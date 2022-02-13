@@ -57,7 +57,7 @@ void Game::InitObjects()
 		this->window->getSize().x - 95.f,
 		float(this->window->getSize().y),
 		graphicsSettings,
-		"assets/art/paddle_sprite_left.png"
+		"assets/art/paddle_sprite_right.png"
 	);
 
 	this->ball = new Ball(
@@ -67,33 +67,33 @@ void Game::InitObjects()
 	);
 }
 
-void Game::InitScore(int scoreCharSize, sf::Color scoreColour, float yOffset)
+void Game::InitScore(int scoreCharSize, sf::Color scoreColour, float xOffset, float yOffset)
 {
-	font.loadFromFile("assets/fonts/PixelFont.ttf");
-
-	int xOffset = this->window->getSize().x / 2.f;
+	// https://www.fontspace.com/messe-duesseldorf-font-f27861
+	font.loadFromFile("assets/fonts/MesseDuesseldorf-O1d3.ttf");
 
 	playerOneScoreText.setFont(font);
 	playerOneScoreText.setString("99");
-	playerOneScoreText.setCharacterSize(scoreCharSize);
+	playerOneScoreText.setCharacterSize(scoreCharSize * this->graphicsSettings.screenResizeScale);
 	playerOneScoreText.setFillColor(scoreColour);
-	playerOneScoreText.setPosition(xOffset / 2.f, yOffset);
+	playerOneScoreText.setPosition(((this->window->getSize().x / 2.f) - xOffset) - playerOneScoreText.getCharacterSize(), yOffset);
 
 	playerTwoScoreText.setFont(font);
 	playerTwoScoreText.setString("99");
-	playerTwoScoreText.setCharacterSize(25);
+	playerTwoScoreText.setCharacterSize(scoreCharSize * this->graphicsSettings.screenResizeScale);
 	playerTwoScoreText.setFillColor(scoreColour);
-	playerTwoScoreText.setPosition(xOffset * 1.5f, yOffset);
+	playerTwoScoreText.setPosition(((this->window->getSize().x / 2.f) + xOffset) + playerTwoScoreText.getCharacterSize(), yOffset);
 }
 
 Game::Game()
 {
+
 	InitVariables();
 	InitGraphicsSettings();
 	InitWindow();
 	InitObjects();
 	InitKeys();
-	InitScore(25, sf::Color::White, 50.f);
+	InitScore(75, sf::Color::White, 100.f, 50.f);
 }
 
 Game::~Game()
@@ -176,10 +176,10 @@ void Game::RenderObjects()
 
 void Game::Render()
 {
-	this->window->clear(sf::Color(30, 10, 53, 255));
+	this->window->clear(sf::Color(33, 30, 23, 255));
 
-	RenderObjects();
 	RenderUI();
+	RenderObjects();
 
 	this->window->display();
 }

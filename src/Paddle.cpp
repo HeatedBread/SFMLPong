@@ -16,7 +16,7 @@ void Paddle::InitWindowResolution()
 
 void Paddle::InitPaddle()
 {
-	paddleSprite.setScale(sf::Vector2f(paddleSizeX, paddleSizeY));
+	paddleSprite.setScale(sf::Vector2f(paddleSizeX * this->graphicsSettings.screenResizeScale, paddleSizeY * this->graphicsSettings.screenResizeScale));
 	paddleSprite.setPosition(position);
 
 	paddleSpeed = 500.f;
@@ -28,8 +28,6 @@ Paddle::Paddle(float startPosX, float startPosY, GraphicsSettings& graphicsSetti
 
 	position.x = startPosX;
 	position.y = (startPosY / 2.f) - (paddleSizeY / 2.f);
-
-	std::cout << position.y << "\n";
 
 	InitWindowResolution();
 	LoadTextures(paddleSpritePath);
